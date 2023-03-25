@@ -30,7 +30,7 @@ export const userController = {
 
 			return res.status(200).json({ success: true, message: { Novo_usuario: newUser } });
 		} catch (error) {
-			return res.status(500).json({ success: false, message: "Falha ao exibir usuários!" });
+			return res.status(500).json({ success: false, message: "Falha ao criar usuário!" });
 		}
 	},
 	put: async (req: Request, res: Response) => {
@@ -56,7 +56,7 @@ export const userController = {
 
 			if (!checkUserExists) return res.status(200).json({ success: false, message: "O usuário não existe" });
 
-			const userUpdated = await prisma.user.delete({ where: { id } });
+			await prisma.user.delete({ where: { id } });
 
 			return res.status(200).json({ success: true, message: "Usuário excluido com sucesso!" });
 		} catch (error) {

@@ -33,6 +33,6 @@ model Expenses {
 id            Int    @id      @default(autoincrement())
 name          String
 value         Int
-financePlanid Int
-financePlan   FinancesPlan  @relation(fields: [financePlanid], references: [id],  onDelete: Cascade, onUpdate: Cascade)
+financePlanId Int
+financePlan   FinancesPlan  @relation(fields: [financePlanId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
 }

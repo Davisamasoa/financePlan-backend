@@ -15,10 +15,7 @@ export const userController = {
 		try {
 			const { name, email, password } = req.body;
 
-			const checkUserExists = await prisma.user.findUnique({ where: { email } });
-
-			if (checkUserExists)
-				return res.status(200).json({ success: false, message: "O email recebido já é cadastrado!" });
+			const checkUserExists = await prisma.user.findUniqueOrThrow({ where: { email } });
 
 			const newUser = await prisma.user.create({
 				data: {
@@ -37,9 +34,7 @@ export const userController = {
 		try {
 			const id = +req.params.id;
 			const { name, email, password } = req.body;
-			const checkUserExists = await prisma.user.findUnique({ where: { id } });
-
-			if (!checkUserExists) return res.status(200).json({ success: false, message: "O usuário não existe" });
+			const checkUserExists = await prisma.user.findUniqueOrThrow({ where: { id } });
 
 			const userUpdated = await prisma.user.update({ where: { id }, data: { name, email, password } });
 
@@ -52,9 +47,7 @@ export const userController = {
 		try {
 			const id = +req.params.id;
 
-			const checkUserExists = await prisma.user.findUnique({ where: { id } });
-
-			if (!checkUserExists) return res.status(200).json({ success: false, message: "O usuário não existe" });
+			const checkUserExists = await prisma.user.findUniqueOrThrow({ where: { id } });
 
 			await prisma.user.delete({ where: { id } });
 

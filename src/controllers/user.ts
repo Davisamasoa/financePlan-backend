@@ -15,7 +15,9 @@ export const userController = {
 		try {
 			const { name, email, password } = req.body;
 
-			const checkUserExists = await prisma.user.findUniqueOrThrow({ where: { email } });
+			const checkUserExists = await prisma.user.findUnique({ where: { email } });
+
+			if (checkUserExists) return res.status(200).json({ success: false, message: "email já cadastrado!" });
 
 			const newUser = await prisma.user.create({
 				data: {

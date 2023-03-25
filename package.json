@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules src/index.ts",
+		"dev:build": "nodemon ./dist/index.js",
 		"build": "tsc",
 		"start": "node ./dist/index.js"
 	},
@@ -21,6 +22,7 @@
 		"@types/express": "^4.17.17",
 		"@types/node": "^18.15.9",
 		"husky": "^8.0.3",
+		"nodemon": "^2.0.22",
 		"prisma": "^4.11.0",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^5.0.2"

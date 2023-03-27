@@ -25,7 +25,7 @@ export const expenseController = {
 			});
 
 			const newExpense = await prisma.expenses.create({ data: { name, value, financePlanId } });
-			return res.status(200).json({ success: true, message: { Nova_despesa: newExpense } });
+			return res.status(201).json({ success: true, message: { Nova_despesa: newExpense } });
 		} catch (error) {
 			return res.status(500).json({ success: false, message: "Falha ao criar despesa!" });
 		}

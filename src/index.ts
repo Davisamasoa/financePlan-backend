@@ -1,8 +1,12 @@
 import express from "express";
 import expenseRouter from "./routes/expense";
 import financePlanRouter from "./routes/financePlan";
-
+import loginRouter from "./routes/login";
 import userRouter from "./routes/user";
+import { checkToken } from "./auth";
+import verifyEmailRouter from "./routes/verifyEmail";
+
+require("dotenv");
 
 const app = express();
 
@@ -21,7 +25,9 @@ app.use((req, res, next) => {
 });
 
 app.use("/user", userRouter);
-app.use("/financePlan", financePlanRouter);
-app.use("/expense", expenseRouter);
+app.use("/financePlan", checkToken, financePlanRouter);
+app.use("/expense", checkToken, expenseRouter);
+app.use("/login", loginRouter);
+app.use("/verifyEmail", verifyEmailRouter);
 
 app.listen(port, () => console.log(`[server] Server is running on ${process.env.URL}:${port}/`));

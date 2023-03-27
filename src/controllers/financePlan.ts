@@ -27,7 +27,7 @@ export const financePlanController = {
 			const checkIfUserExists = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
 
 			const newFinancePlan = await prisma.financesPlan.create({ data: { name, entry, userId } });
-			return res.status(200).json({ success: true, message: { Novo_financePlan: newFinancePlan } });
+			return res.status(201).json({ success: true, message: { Novo_financePlan: newFinancePlan } });
 		} catch (error) {
 			return res.status(500).json({ success: false, message: "Falha ao criar financePlan!" });
 		}

@@ -2,17 +2,31 @@ import { prisma } from "../database/prismaClient";
 import { Request, Response } from "express";
 
 export const financePlanController = {
-	get: async (req: Request, res: Response) => {
+	getByUserId: async (req: Request, res: Response) => {
 		try {
 			const userId = +req.params.id;
 
-			const checkIfUserExists = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+			const checkIfUserExists = await prisma.user.findUniqueOrThrow({
+				where: { id: userId },
+			});
 
 			const findFinancesPlan = await prisma.financesPlan.findMany({
 				where: { userId },
+				include: { expenses: true },
 			});
 
 			return res.status(200).json({ success: true, message: findFinancesPlan });
+		} catch (error) {
+			return res.status(500).json({ success: false, message: "Falha ao exibir financesPlans!" });
+		}
+	},
+	getId: async (req: Request, res: Response) => {
+		try {
+			const id = +req.params.id;
+
+			const findFinancePlan = await prisma.financesPlan.findUniqueOrThrow({ where: { id } });
+
+			return res.status(200).json({ success: true, message: findFinancePlan });
 		} catch (error) {
 			return res.status(500).json({ success: false, message: "Falha ao exibir financesPlans!" });
 		}

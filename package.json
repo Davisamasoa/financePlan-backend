@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules src/index.ts",
 		"dev:build": "nodemon ./dist/index.js",
-		"build": "tsc && yarn prisma migrate deploy",
+		"build": "tsc && prisma migrate deploy",
 		"start": "node ./dist/index.js"
 	},
 	"dependencies": {

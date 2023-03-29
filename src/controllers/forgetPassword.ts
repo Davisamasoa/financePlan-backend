@@ -1,6 +1,8 @@
 import { prisma } from "../database/prismaClient";
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
+import * as nodemailer from "nodemailer";
 import transporter from "../transporter";
 
 function generateVerificationCode() {
@@ -14,7 +16,7 @@ function generateVerificationCode() {
 	return verificationcode;
 }
 
-export const verifyEmailController = {
+export const forgetPasswordController = {
 	post: async (req: Request, res: Response) => {
 		try {
 			const { email } = req.body;
@@ -24,15 +26,15 @@ export const verifyEmailController = {
 			if (!checkUserExists)
 				return res.status(404).json({ success: false, message: "Esse email não está cadastrado!" });
 
-			if (checkUserExists.emailVerified)
-				return res.status(203).json({ success: false, message: "O email já está verificado!" });
+			if (!checkUserExists.emailVerified)
+				return res.status(203).json({ success: false, message: "O email não está verificado!" });
 
 			const verificationCode = generateVerificationCode();
 
 			transporter.sendMail({
-				text: `O seu código de verificação é: ${verificationCode}`,
-				subject: "Código de verificação",
-				html: `<p>O seu código de verificação é:</p> <h1> ${verificationCode}</h1>`,
+				text: `O seu código de recuperação é: ${verificationCode}`,
+				subject: "Código de recuperação",
+				html: `<p>O seu código de recuperação é:</p> <h1> ${verificationCode}</h1>`,
 				to: email,
 				from: "Finance Plan <financePlanSite@outlook.com>",
 			});
@@ -53,39 +55,33 @@ export const verifyEmailController = {
 	},
 	put: async (req: Request, res: Response) => {
 		try {
-			const { email, code } = req.body;
+			const { email, password, code } = req.body;
 
 			const checkUserExists = await prisma.user.findUnique({ where: { email } });
 
 			if (!checkUserExists)
 				return res.status(404).json({ success: false, message: "Esse email não está cadastrado!" });
 
-			if (checkUserExists.emailVerified)
-				return res.status(203).json({ success: false, message: "O email já está verificado!" });
+			if (!checkUserExists.emailVerified)
+				return res.status(203).json({ success: false, message: "O email não está verificado!" });
 
 			if (code !== checkUserExists.verificationCode)
 				return res.status(203).json({ success: false, message: "O código de verificação está incorreto!" });
 
-			const secret: any = process.env.SECRET;
-			const token = jwt.sign(
-				{
-					id: checkUserExists.id,
-				},
-				secret
-			);
+			const salt = await bcrypt.genSalt(12);
+			const passwordHash: string = await bcrypt.hash(password, salt);
 
 			await prisma.user.update({
 				where: { email },
 				data: {
-					emailVerified: true,
+					password: passwordHash,
 					verificationCode: "",
 				},
 			});
 
 			return res.status(200).json({
 				success: true,
-				message: "O usuário foi logado com sucesso!",
-				token,
+				message: "A senha foi trocada com sucesso!",
 			});
 		} catch (error) {
 			return res.status(500).json({ success: false, message: "Falha ao logar!" });

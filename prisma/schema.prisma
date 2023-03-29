@@ -16,7 +16,7 @@ email     String  @unique
 name      String 
 password  String
 emailVerified Boolean @default(false)
-emailVerifiedCode String?
+verificationCode String?
 financesPlan FinancesPlan[]
 }
 
@@ -26,6 +26,7 @@ name       String
 date       DateTime @default(now())
 entry      Int
 expenses   Expenses[]   
+goals       Goals[]   
 userId      Int
 user        User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
@@ -35,6 +36,14 @@ model Expenses {
 id            Int    @id      @default(autoincrement())
 name          String
 value         Int
+financePlanId Int
+financePlan   FinancesPlan  @relation(fields: [financePlanId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Goals{
+id            Int    @id      @default(autoincrement())
+name          String
+done          Boolean @default(false)
 financePlanId Int
 financePlan   FinancesPlan  @relation(fields: [financePlanId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
 }

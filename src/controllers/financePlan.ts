@@ -10,7 +10,6 @@ export const financePlanController = {
 
 			const findFinancesPlan = await prisma.financesPlan.findMany({
 				where: { userId },
-				include: { user: true },
 			});
 
 			return res.status(200).json({ success: true, message: findFinancesPlan });

@@ -5,6 +5,8 @@ import loginRouter from "./routes/login";
 import userRouter from "./routes/user";
 import { checkToken } from "./auth";
 import verifyEmailRouter from "./routes/verifyEmail";
+import forgetPasswordRouter from "./routes/forgetPassword";
+import goalRouter from "./routes/goal";
 
 require("dotenv");
 
@@ -27,7 +29,9 @@ app.use((req, res, next) => {
 app.use("/user", userRouter);
 app.use("/financePlan", checkToken, financePlanRouter);
 app.use("/expense", checkToken, expenseRouter);
+app.use("/goal", checkToken, goalRouter);
 app.use("/login", loginRouter);
 app.use("/verifyEmail", verifyEmailRouter);
+app.use("/forgetPassword", forgetPasswordRouter);
 
 app.listen(port, () => console.log(`[server] Server is running on ${process.env.URL}:${port}/`));

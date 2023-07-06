@@ -28,14 +28,18 @@ export const verifyEmailController = {
 				return res.status(203).json({ success: false, message: "O email já está verificado!" });
 
 			const verificationCode = generateVerificationCode();
-
-			transporter.sendMail({
+			const message = {
 				text: `O seu código de verificação é: ${verificationCode}`,
 				subject: "Código de verificação",
 				html: `<p>O seu código de verificação é:</p> <h1> ${verificationCode}</h1>`,
 				to: email,
 				from: "Finance Plan <financePlanSite@outlook.com>",
-			});
+			};
+
+			await transporter
+				.sendMail(message)
+				.then((res) => console.log(res))
+				.catch((err) => console.log(err));
 
 			const sendVerificationCodeToUserData = await prisma.user.update({
 				where: { email },

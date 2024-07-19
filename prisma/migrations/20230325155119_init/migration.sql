@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "FinancesPlan" ALTER COLUMN "date" SET DEFAULT CURRENT_TIMESTAMP;

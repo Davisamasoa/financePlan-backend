@@ -26,12 +26,9 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-app.use(
-	"/",
-	express.Router().get("/", (req, res) => {
-		res.json({ msg: "Funcionou!" });
-	})
-);
+app.get("/", (req, res) => {
+	res.json({ msg: "Hello World!" });
+});
 app.use("/user", userRouter);
 app.use("/financePlan", checkToken, financePlanRouter);
 app.use("/expense", checkToken, expenseRouter);

@@ -4,7 +4,7 @@
 	"main": "/dist/index.js",
 	"license": "MIT",
 	"scripts": {
-		"dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules src/index.ts",
+		"dev": "nodemon ./src/index.ts",
 		"dev:build": "tsc && nodemon ./dist/index.js",
 		"build": "tsc",
 		"start": "node ./dist/index.js"

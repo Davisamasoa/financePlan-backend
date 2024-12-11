@@ -1,9 +1,9 @@
 import * as nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-	service: "hotmail",
+	service: "gmail",
 	auth: {
-		user: "financePlanSite@outlook.com",
+		user: "financeplancodesender@gmail.com",
 		pass: process.env.EMAIL_PASSW,
 	},
 });
